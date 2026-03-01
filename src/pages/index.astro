@@ -8,7 +8,6 @@ import OpsLog from '../components/OpsLog.astro';
 import ProjectsView from '../components/ProjectsView.astro';
 import TechView from '../components/TechView.astro';
 import DataView from '../components/DataView.astro';
-import { profile } from '../data/profile';
 
 const views = [
   { id: 'sys', label: 'SYS' },
@@ -20,7 +19,7 @@ const views = [
 ---
 
 <BaseLayout
-  title="Abdussamad Farooq Saeed"
+  title="Abdussamad Farooq Saeed | Senior AI Engineer"
   description="Senior AI Engineer specializing in production AI systems, cybersecurity AI, and high performance Linux environments."
 >
   <ConsoleHeader />
@@ -32,6 +31,8 @@ const views = [
         <button
           class={`mobile-tab ${i === 0 ? 'active' : ''}`}
           data-view={view.id}
+          aria-controls={`view-${view.id}`}
+          aria-pressed={i === 0 ? 'true' : 'false'}
           type="button"
         >
           {view.label}
@@ -55,160 +56,4 @@ const views = [
   </main>
 
   <StatusBar />
-
-  <script is:inline>
-    const VIEW_IDS = ['sys', 'ops', 'proj', 'tech', 'data'];
-    const toast = document.getElementById('toast');
-    let toastTimer = null;
-    const showToast = (message) => {
-      if (!toast) return;
-      if (toastTimer) window.clearTimeout(toastTimer);
-      toast.textContent = message;
-      toast.classList.add('show');
-      toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2200);
-    };
-
-    // ── View Switching ──
-    let activeView = 'sys';
-
-    const switchView = (viewId) => {
-      if (!VIEW_IDS.includes(viewId) || viewId === activeView) return;
-      activeView = viewId;
-
-      document.querySelectorAll('.view-panel').forEach((panel) => {
-        const isTarget = panel.id === `view-${viewId}`;
-        panel.classList.toggle('active', isTarget);
-      });
-
-      document.querySelectorAll('.sidebar-item').forEach((btn) => {
-        btn.classList.toggle('active', btn.dataset.view === viewId);
-      });
-
-      document.querySelectorAll('.mobile-tab').forEach((btn) => {
-        btn.classList.toggle('active', btn.dataset.view === viewId);
-      });
-
-      // Scroll viewport to top on view switch
-      const viewport = document.querySelector('.main-viewport');
-      if (viewport) viewport.scrollTop = 0;
-    };
-
-    // Sidebar clicks
-    document.querySelectorAll('.sidebar-item').forEach((btn) => {
-      btn.addEventListener('click', () => switchView(btn.dataset.view));
-    });
-
-    // Mobile tab clicks
-    document.querySelectorAll('.mobile-tab').forEach((btn) => {
-      btn.addEventListener('click', () => switchView(btn.dataset.view));
-    });
-
-    // ── Keyboard Navigation ──
-    document.addEventListener('keydown', (e) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-
-      const currentIndex = VIEW_IDS.indexOf(activeView);
-
-      if (e.key === 'j' || e.key === 'J') {
-        e.preventDefault();
-        switchView(VIEW_IDS[(currentIndex + 1) % VIEW_IDS.length]);
-      } else if (e.key === 'k' || e.key === 'K') {
-        e.preventDefault();
-        switchView(VIEW_IDS[(currentIndex - 1 + VIEW_IDS.length) % VIEW_IDS.length]);
-      } else if (e.key >= '1' && e.key <= '5') {
-        e.preventDefault();
-        switchView(VIEW_IDS[parseInt(e.key) - 1]);
-      } else if (e.key === 'Escape') {
-        document.querySelectorAll('.ops-row.active').forEach((r) => r.classList.remove('active'));
-        document.querySelectorAll('.ops-detail-wrap.active').forEach((d) => d.classList.remove('active'));
-        document.querySelectorAll('.proj-row.active').forEach((r) => r.classList.remove('active'));
-        document.querySelectorAll('.proj-detail-wrap.active').forEach((d) => d.classList.remove('active'));
-      }
-    });
-
-    // ── OPS Row Expansion ──
-    const handleOpsClick = (row) => {
-      const index = row.dataset.opsIndex;
-      const detail = document.querySelector(`[data-ops-detail="${index}"]`);
-      const wasActive = row.classList.contains('active');
-
-      document.querySelectorAll('.ops-row.active').forEach((r) => r.classList.remove('active'));
-      document.querySelectorAll('.ops-detail-wrap.active').forEach((d) => d.classList.remove('active'));
-
-      if (!wasActive && detail) {
-        row.classList.add('active');
-        detail.classList.add('active');
-      }
-    };
-
-    document.querySelectorAll('.ops-row').forEach((row) => {
-      row.addEventListener('click', () => handleOpsClick(row));
-      row.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleOpsClick(row); }
-      });
-    });
-
-    // ── PROJ Row Expansion ──
-    const handleProjClick = (row) => {
-      const index = row.dataset.projIndex;
-      const detail = document.querySelector(`[data-proj-detail="${index}"]`);
-      const wasActive = row.classList.contains('active');
-
-      document.querySelectorAll('.proj-row.active').forEach((r) => r.classList.remove('active'));
-      document.querySelectorAll('.proj-detail-wrap.active').forEach((d) => d.classList.remove('active'));
-
-      if (!wasActive && detail) {
-        row.classList.add('active');
-        detail.classList.add('active');
-      }
-    };
-
-    document.querySelectorAll('.proj-row').forEach((row) => {
-      row.addEventListener('click', () => handleProjClick(row));
-      row.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleProjClick(row); }
-      });
-    });
-
-    // ── Email Copy ──
-    const copyEmail = async (email, btn) => {
-      if (!email) return;
-      let success = false;
-
-      if (navigator.clipboard && window.isSecureContext) {
-        try { await navigator.clipboard.writeText(email); success = true; }
-        catch (error) { console.error(error); }
-      }
-
-      if (!success) {
-        const area = document.createElement('textarea');
-        area.value = email;
-        area.style.cssText = 'position:fixed;top:-1000px;opacity:0';
-        document.body.appendChild(area);
-        area.focus();
-        area.select();
-        try { success = document.execCommand('copy'); } catch { success = false; }
-        document.body.removeChild(area);
-      }
-
-      if (success) {
-        showToast('Email copied to clipboard');
-        if (btn) {
-          const original = btn.textContent;
-          btn.textContent = '[Copied!]';
-          btn.classList.add('btn-copied');
-          setTimeout(() => { btn.textContent = original; btn.classList.remove('btn-copied'); }, 1500);
-        }
-      } else {
-        showToast('Could not copy email');
-      }
-    };
-
-    const emailBtn = document.getElementById('copyEmailButton');
-    emailBtn?.addEventListener('click', () => copyEmail(emailBtn.dataset.email, emailBtn));
-
-    // ── Copyright Year ──
-    const yearEl = document.getElementById('copyrightYear');
-    if (yearEl) yearEl.textContent = '\u00A9 ' + new Date().getFullYear();
-  </script>
 </BaseLayout>

@@ -7,18 +7,21 @@ import { profile } from '../data/profile';
   <div class="ops-list">
     {profile.experience.map((item, index) => (
       <div class="ops-entry">
-        <div class={`ops-row ${index === 0 ? 'active' : ''}`} data-ops-index={index} role="button" tabindex="0">
+        <button
+          class={`ops-row ${index === 0 ? 'active' : ''}`}
+          type="button"
+          data-ops-index={index}
+          aria-controls={`ops-detail-${index}`}
+          aria-expanded="true"
+        >
           <span class="ops-idx">{String(index + 1).padStart(2, '0')}</span>
           <span class="ops-info">
             <span class="ops-role">{item.role}</span>
-            <span class="ops-org">
-              {item.company}
-              {item.companyUrl && <a href={item.companyUrl} target="_blank" rel="noopener noreferrer" class="ops-link-indicator" onclick="event.stopPropagation()"> [link]</a>}
-            </span>
+            <span class="ops-org">{item.company}</span>
           </span>
           <span class="ops-period">{item.period}</span>
-        </div>
-        <div class={`ops-detail-wrap ${index === 0 ? 'active' : ''}`} data-ops-detail={index}>
+        </button>
+        <div id={`ops-detail-${index}`} class="ops-detail-wrap active" data-ops-detail={index}>
           <div class="ops-detail-inner">
             <p class="ops-location">{item.location}</p>
             <ul>
@@ -26,6 +29,11 @@ import { profile } from '../data/profile';
                 <li>{bullet}</li>
               ))}
             </ul>
+            {item.companyUrl && (
+              <a href={item.companyUrl} target="_blank" rel="noopener noreferrer" class="ops-link-indicator">
+                visit company [link]
+              </a>
+            )}
           </div>
         </div>
       </div>

@@ -14,6 +14,8 @@ const views = [
       class={`sidebar-item ${i === 0 ? 'active' : ''}`}
       data-view={view.id}
       type="button"
+      aria-controls={`view-${view.id}`}
+      aria-pressed={i === 0 ? 'true' : 'false'}
       aria-label={`${view.title} view`}
       title={`${i + 1}: ${view.title}`}
     >

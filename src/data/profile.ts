@@ -62,11 +62,11 @@ export interface LanguageEntry {
 
 export const profile = {
   name: 'Abdussamad Farooq Saeed',
-  location: 'Living in Saudi Arabia',
-  citizenship: 'Canadian Citizen',
+  location: 'Saudi Arabia',
+  citizenship: 'Canadian',
   headline: 'Senior AI Engineer',
   about:
-    'I am a Senior AI Engineer with deep experience in high performance computing and advanced Linux systems. I build production AI systems with LLMs and computer vision. I also work across autonomous systems, embedded AI, and large scale HPC environments. I focus on secure and efficient software with measurable performance gains, and I take systems from research to reliable real world deployment.',
+    'Senior AI Engineer specializing in production AI systems, LLM pipelines, and computer vision. Deep expertise in high performance computing, CUDA optimization, and advanced Linux infrastructure. Experienced in agentic AI architectures, RAG systems, Arabic NLP, and cybersecurity AI research. Skilled in systems programming with C, C++, and Python across embedded, autonomous, and large scale HPC environments. I take systems from research to reliable real world deployment with measurable performance gains.',
   contacts: {
     github: 'https://github.com/Airbus5717',
     portfolio: 'https://airbus5717.github.io',
