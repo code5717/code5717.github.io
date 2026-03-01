@@ -19,9 +19,9 @@ import { profile } from '../data/profile';
         <tbody>
           <tr><td>location</td><td>{profile.location}</td></tr>
           <tr><td>citizenship</td><td>{profile.citizenship}</td></tr>
-          <tr><td>email</td><td>{profile.contacts.email} <button id="copyEmailButton" class="sys-inline-action" type="button" data-email={profile.contacts.email}>[copy]</button></td></tr>
-          <tr><td>github</td><td><a href={profile.contacts.github} target="_blank" rel="noopener noreferrer" class="sys-link">{profile.contacts.github.replace('https://', '')}</a> <a href={profile.contacts.github} target="_blank" rel="noopener noreferrer" class="sys-inline-link">[link]</a></td></tr>
-          <tr><td>linkedin</td><td><a href={profile.contacts.linkedin} target="_blank" rel="noopener noreferrer" class="sys-link">{profile.contacts.linkedin.replace('https://', '')}</a> <a href={profile.contacts.linkedin} target="_blank" rel="noopener noreferrer" class="sys-inline-link">[link]</a></td></tr>
+          <tr><td>email</td><td><button id="copyEmailButton" class="sys-inline-action" type="button" data-email={profile.contacts.email}>[copy]</button></td></tr>
+          <tr><td>github</td><td><a href={profile.contacts.github} target="_blank" rel="noopener noreferrer" class="sys-inline-link">[link]</a></td></tr>
+          <tr><td>linkedin</td><td><a href={profile.contacts.linkedin} target="_blank" rel="noopener noreferrer" class="sys-inline-link">[link]</a></td></tr>
           <tr><td>resume</td><td><a href="/RESUME-ABDUSSAMAD-FEB-2026.pdf" target="_blank" rel="noopener noreferrer" class="sys-inline-link">[link]</a></td></tr>
           <tr><td>languages</td><td>{profile.languages.map((l, i) => <><span class="sys-lang-token">{l.name}<span class="sys-lang-fluency">/{l.fluency}</span></span>{i < profile.languages.length - 1 && ' '}</>)}</td></tr>
         </tbody>
