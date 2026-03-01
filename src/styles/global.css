@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Share+Tech+Mono&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -247,8 +246,9 @@ html.no-js body {
   position: fixed;
   left: 0;
   right: 0;
-  top: -12%;
+  top: 0;
   height: 12%;
+  transform: translateY(-100%);
   pointer-events: none;
   z-index: 26;
   background:
@@ -487,7 +487,7 @@ html.no-js .sidebar {
   color: var(--terminal-muted);
   font-size: 0.78rem;
   margin-left: auto;
-  opacity: 0.6;
+  opacity: 0.85;
   transition: opacity 0.2s ease;
 }
 
@@ -593,6 +593,8 @@ html.no-js .main-viewport {
 
 .js .view-panel.active {
   display: block;
+}
+.js.views-ready .view-panel.active {
   animation: view-enter 0.3s ease-out;
 }
 
@@ -1721,24 +1723,24 @@ button:focus-visible {
 }
 
 @keyframes sweep-beam {
-  0% { top: -12%; }
-  100% { top: 112%; }
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(124vh); }
 }
 
 @keyframes static-band {
-  0% { top: 12%; opacity: 0; }
-  2% { top: 12%; opacity: 0.7; }
-  3% { top: 13%; opacity: 0; }
-  20% { top: 45%; opacity: 0; }
-  21% { top: 45%; opacity: 0.5; }
-  22% { top: 46%; opacity: 0; }
-  50% { top: 78%; opacity: 0; }
-  51% { top: 78%; opacity: 0.6; }
-  52% { top: 79%; opacity: 0; }
-  70% { top: 33%; opacity: 0; }
-  71% { top: 33%; opacity: 0.4; }
-  72% { top: 34%; opacity: 0; }
-  100% { top: 90%; opacity: 0; }
+  0%   { transform: translateY(12vh); opacity: 0; }
+  2%   { transform: translateY(12vh); opacity: 0.7; }
+  3%   { transform: translateY(13vh); opacity: 0; }
+  20%  { transform: translateY(45vh); opacity: 0; }
+  21%  { transform: translateY(45vh); opacity: 0.5; }
+  22%  { transform: translateY(46vh); opacity: 0; }
+  50%  { transform: translateY(78vh); opacity: 0; }
+  51%  { transform: translateY(78vh); opacity: 0.6; }
+  52%  { transform: translateY(79vh); opacity: 0; }
+  70%  { transform: translateY(33vh); opacity: 0; }
+  71%  { transform: translateY(33vh); opacity: 0.4; }
+  72%  { transform: translateY(34vh); opacity: 0; }
+  100% { transform: translateY(90vh); opacity: 0; }
 }
 
 @keyframes edge-flicker {
