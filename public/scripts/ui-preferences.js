@@ -24,6 +24,9 @@
     const storedEffects = localStorage.getItem(EFFECTS_KEY);
     if (storedEffects && VALID_EFFECTS.has(storedEffects)) {
       effects = storedEffects;
+    } else if (window.matchMedia('(max-width: 767px)').matches) {
+      // Default to lighter effects on phones unless user already chose a level.
+      effects = 'reduced';
     } else if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       effects = 'reduced';
     }

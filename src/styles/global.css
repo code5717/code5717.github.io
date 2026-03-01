@@ -1284,6 +1284,18 @@ html.no-js .view-panel + .view-panel {
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 767px) {
+  :root {
+    --fx-scanline-opacity: 0.15;
+    --fx-flicker-opacity: 0.025;
+    --fx-beam-opacity: 0.3;
+    --fx-static-opacity: 0.2;
+    --fx-aurora-opacity: 0.22;
+    --fx-blob-opacity: 0.1;
+    --fx-crt-screen-opacity: 0.12;
+    --fx-glitch-opacity: 0.01;
+    --fx-chroma-opacity: 0.02;
+  }
+
   body {
     font-size: 16px;
   }
@@ -1308,6 +1320,7 @@ html.no-js .view-panel + .view-panel {
 
   .mobile-tab {
     flex: 1 0 4rem;
+    min-height: 44px;
     padding: 0.66rem 0.35rem;
     font-size: 0.76rem;
     letter-spacing: 0.03em;
@@ -1369,6 +1382,7 @@ html.no-js .view-panel + .view-panel {
   }
 
   .sys-link-item {
+    min-height: 42px;
     gap: 0.55rem;
     padding: 0.45rem 0.65rem;
     font-size: 0.8rem;
@@ -1399,6 +1413,7 @@ html.no-js .view-panel + .view-panel {
 
   .ops-row,
   .proj-row {
+    min-height: 44px;
     align-items: flex-start;
     gap: 0.55rem;
     padding: 0.62rem 0.42rem;
@@ -1450,6 +1465,7 @@ html.no-js .view-panel + .view-panel {
   .ops-detail-inner ul,
   .proj-detail-inner ul,
   .data-list {
+    padding-left: 1rem;
     font-size: 0.84rem;
     line-height: 1.5;
   }
@@ -1460,6 +1476,8 @@ html.no-js .view-panel + .view-panel {
   }
 
   .skill-token {
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: 0.8rem;
     padding: 0.28rem 0.52rem;
   }
@@ -1509,6 +1527,42 @@ html.no-js .view-panel + .view-panel {
 
   .status-bar-left {
     display: none;
+  }
+
+  .kv-table .kv-key {
+    width: 5.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .kv-table,
+  .kv-table tbody,
+  .kv-table tr,
+  .kv-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .kv-table tr {
+    padding: 0.38rem 0;
+    border-bottom: 1px dashed color-mix(in srgb, var(--terminal-grid) 65%, transparent 35%);
+  }
+
+  .kv-table tr:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .kv-table .kv-key {
+    width: auto;
+    padding-right: 0;
+    padding-bottom: 0.1rem;
+    font-size: 0.79rem;
+  }
+
+  .kv-val {
+    font-size: 0.81rem;
+    line-height: 1.45;
   }
 }
 
