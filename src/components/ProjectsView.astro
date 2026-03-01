@@ -9,11 +9,11 @@ import { profile } from '../data/profile';
       <div class="proj-entry">
         <div class="proj-row-shell">
           <button
-            class="proj-row"
+            class={`proj-row ${index === 0 ? 'active' : ''}`}
             type="button"
             data-proj-index={index}
             aria-controls={`proj-detail-${index}`}
-            aria-expanded="true"
+            aria-expanded={index === 0 ? 'true' : 'false'}
           >
             <span class="proj-period">{project.period}</span>
             <span class="proj-name">{project.name}</span>
@@ -24,7 +24,7 @@ import { profile } from '../data/profile';
             </a>
           )}
         </div>
-        <div id={`proj-detail-${index}`} class="proj-detail-wrap active" data-proj-detail={index}>
+        <div id={`proj-detail-${index}`} class={`proj-detail-wrap ${index === 0 ? 'active' : ''}`} data-proj-detail={index} hidden={index !== 0}>
           <div class="proj-detail-inner">
             <ul>
               {project.bullets.map((bullet) => (

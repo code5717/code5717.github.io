@@ -12,7 +12,7 @@ import { profile } from '../data/profile';
           type="button"
           data-ops-index={index}
           aria-controls={`ops-detail-${index}`}
-          aria-expanded="true"
+          aria-expanded={index === 0 ? 'true' : 'false'}
         >
           <span class="ops-idx">{String(index + 1).padStart(2, '0')}</span>
           <span class="ops-info">
@@ -21,7 +21,7 @@ import { profile } from '../data/profile';
           </span>
           <span class="ops-period">{item.period}</span>
         </button>
-        <div id={`ops-detail-${index}`} class="ops-detail-wrap active" data-ops-detail={index}>
+        <div id={`ops-detail-${index}`} class={`ops-detail-wrap ${index === 0 ? 'active' : ''}`} data-ops-detail={index} hidden={index !== 0}>
           <div class="ops-detail-inner">
             <p class="ops-location">{item.location}</p>
             <ul>
