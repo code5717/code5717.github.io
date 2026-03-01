@@ -692,6 +692,32 @@ body {
   text-decoration: underline;
 }
 
+.sys-inline-link,
+.sys-inline-action {
+  color: #ffda6a;
+  font-family: var(--font-display-mono);
+  font-size: 0.78rem;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sys-inline-link:hover,
+.sys-inline-action:hover {
+  text-decoration: underline;
+}
+
+.sys-lang-token {
+  color: var(--terminal-accent);
+  font-family: var(--font-display-mono);
+}
+
+.sys-lang-fluency {
+  color: var(--terminal-accent-blue);
+}
+
 .sys-about {
   margin: 1.5rem 0 0;
   color: var(--terminal-text);
