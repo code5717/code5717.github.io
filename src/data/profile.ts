@@ -68,9 +68,9 @@ export const profile = {
   about:
     'Senior AI Engineer specializing in production AI systems, LLM pipelines, and computer vision. Deep expertise in high performance computing, CUDA optimization, and advanced Linux infrastructure. Experienced in agentic AI architectures, RAG systems, Arabic NLP, and cybersecurity AI research. Skilled in systems programming with C, C++, and Python across embedded, autonomous, and large scale HPC environments. I take systems from research to reliable real world deployment with measurable performance gains.',
   contacts: {
-    github: 'https://github.com/Airbus5717',
-    portfolio: 'https://airbus5717.github.io',
-    linkedin: 'https://linkedin.com/in/airbus5717',
+    github: 'https://github.com/code5717',
+    portfolio: 'https://code5717.github.io',
+    linkedin: 'https://linkedin.com/in/code5717',
     email: 'abdussamadf350@gmail.com',
     phone: '+966 55 950 8722'
   } as ContactLinks,
@@ -176,7 +176,7 @@ export const profile = {
     {
       name: 'Making a complete compiler using vibecoding',
       period: '2026',
-      link: 'https://airbus5717.github.io/a7-py',
+      link: 'https://code5717.github.io/a7-py',
       bullets: [
         'Designed a complete compiler pipeline using vibecoding workflows from lexer to code generation.',
         'Implemented parsing, AST construction, semantic analysis, and diagnostics for full language handling.',
@@ -187,7 +187,7 @@ export const profile = {
     {
       name: 'High Performance Custom Compiler',
       period: '2021-2022',
-      link: 'https://github.com/Airbus5717/rotate',
+      link: 'https://github.com/code5717/rotate',
       bullets: [
         'Built recursive descent compiler in C and C++.',
         'Achieved 150 plus MB per second tokenization on i7 and 186 MB per second on i9.',
@@ -198,7 +198,7 @@ export const profile = {
     {
       name: 'Arraylist for C',
       period: '2024-2026',
-      link: 'https://airbus5717.github.io/Arraylist',
+      link: 'https://code5717.github.io/Arraylist',
       bullets: [
         'Built a lightweight C library providing macro based type safe dynamic arrays with two API tiers: checked and unchecked.',
         'Implemented overflow checked allocation, bounds checked access, safe reallocation preserving data on failure, and zero capacity growth.',

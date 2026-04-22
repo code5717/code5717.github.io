@@ -1,19 +1,26 @@
 {
-  "name": "airbus5717.github.io",
-  "version": "1.0.0",
+  "name": "code5717.github.io",
   "private": true,
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.13",
-    "astro": "^5.13.5",
-    "tailwindcss": "^4.1.13"
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.15.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "typescript": "^5.9.2"
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2",
+    "vite": "^5.4.19"
   }
 }
