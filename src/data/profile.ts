@@ -174,14 +174,14 @@ export const profile = {
       ]
     },
     {
-      name: 'Making a complete compiler using vibecoding',
+      name: 'Programming Language from Scratch',
       period: '2026',
       link: 'https://code5717.github.io/a7-py',
       bullets: [
-        'Designed a complete compiler pipeline using vibecoding workflows from lexer to code generation.',
-        'Implemented parsing, AST construction, semantic analysis, and diagnostics for full language handling.',
-        'Built and validated end to end compilation flows with runnable examples and iterative debugging.',
-        'Documented architecture, implementation decisions, and project progress in a public project page.'
+        'Designed and implemented a programming language from scratch, from lexer and parser to execution pipeline.',
+        'Built parsing, AST construction, semantic analysis, and diagnostics for end to end language handling.',
+        'Validated the language with runnable examples, iterative debugging, and full pipeline testing.',
+        'Documented the architecture, implementation decisions, and development progress in a public project page.'
       ]
     },
     {

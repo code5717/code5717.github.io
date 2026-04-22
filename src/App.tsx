@@ -60,8 +60,8 @@ export default function App() {
     {
       ...profile.projects[2],
       image: '/imgs/proj-compiler.png',
-      summary: 'End-to-end compiler implementation built through vibecoding workflows from lexer to code generation.',
-      tags: ['Parsing', 'Codegen', 'Language Design']
+      summary: 'A programming language built from scratch, covering lexer, parser, semantics, diagnostics, and execution flow.',
+      tags: ['Language Design', 'Parsing', 'Semantics']
     }
   ];
 
