@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { profile } from './data/profile';
 import { useReveal } from './lib/useReveal';
 import {
@@ -20,6 +20,8 @@ const navItems = [
   { href: '#background', label: 'Background', icon: <IconGlobe size={18} /> },
   { href: '#connect', label: "Let's Connect", icon: <IconMail size={18} /> }
 ];
+
+const heroSignal = ['Agentic workflows', 'Arabic NLP', 'Computer vision', 'CUDA + HPC', 'Systems design'];
 
 const skillBands = [
   {
@@ -44,22 +46,126 @@ export default function App() {
   useReveal();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeExperience, setActiveExperience] = useState<number | null>(0);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const finePointer = window.matchMedia('(pointer: fine)');
+    if (reducedMotion.matches || !finePointer.matches) return;
+
+    const heroVisual = document.querySelector<HTMLElement>('[data-interactive-hero]');
+    const magneticTargets = document.querySelectorAll<HTMLElement>('[data-magnetic]');
+    const tiltTargets = document.querySelectorAll<HTMLElement>('[data-tilt]');
+
+    const cleanup: Array<() => void> = [];
+
+    if (heroVisual) {
+      const handleMove = (event: PointerEvent) => {
+        const rect = heroVisual.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        const tiltX = (py - 0.5) * -10;
+        const tiltY = (px - 0.5) * 12;
+
+        heroVisual.style.setProperty('--pointer-x', `${(px * 100).toFixed(2)}%`);
+        heroVisual.style.setProperty('--pointer-y', `${(py * 100).toFixed(2)}%`);
+        heroVisual.style.setProperty('--tilt-x', `${tiltX.toFixed(2)}deg`);
+        heroVisual.style.setProperty('--tilt-y', `${tiltY.toFixed(2)}deg`);
+      };
+
+      const resetHero = () => {
+        heroVisual.style.removeProperty('--pointer-x');
+        heroVisual.style.removeProperty('--pointer-y');
+        heroVisual.style.removeProperty('--tilt-x');
+        heroVisual.style.removeProperty('--tilt-y');
+      };
+
+      heroVisual.addEventListener('pointermove', handleMove);
+      heroVisual.addEventListener('pointerleave', resetHero);
+      cleanup.push(() => {
+        heroVisual.removeEventListener('pointermove', handleMove);
+        heroVisual.removeEventListener('pointerleave', resetHero);
+      });
+    }
+
+    magneticTargets.forEach((element) => {
+      const handleMove = (event: PointerEvent) => {
+        const rect = element.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 14;
+        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 12;
+        element.style.setProperty('--magnetic-x', `${x.toFixed(2)}px`);
+        element.style.setProperty('--magnetic-y', `${y.toFixed(2)}px`);
+      };
+
+      const reset = () => {
+        element.style.removeProperty('--magnetic-x');
+        element.style.removeProperty('--magnetic-y');
+      };
+
+      element.addEventListener('pointermove', handleMove);
+      element.addEventListener('pointerleave', reset);
+      cleanup.push(() => {
+        element.removeEventListener('pointermove', handleMove);
+        element.removeEventListener('pointerleave', reset);
+      });
+    });
+
+    tiltTargets.forEach((element) => {
+      const handleMove = (event: PointerEvent) => {
+        const rect = element.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        element.style.setProperty('--tilt-x', `${((py - 0.5) * -7).toFixed(2)}deg`);
+        element.style.setProperty('--tilt-y', `${((px - 0.5) * 9).toFixed(2)}deg`);
+      };
+
+      const reset = () => {
+        element.style.removeProperty('--tilt-x');
+        element.style.removeProperty('--tilt-y');
+      };
+
+      element.addEventListener('pointermove', handleMove);
+      element.addEventListener('pointerleave', reset);
+      cleanup.push(() => {
+        element.removeEventListener('pointermove', handleMove);
+        element.removeEventListener('pointerleave', reset);
+      });
+    });
+
+    return () => cleanup.forEach((fn) => fn());
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
+
   const featuredProjects = [
     {
       ...profile.projects[0],
       image: '/imgs/proj-cubesat.png',
+      imageAlt: 'CubeSat debris detection interface showing orbital tracking and telemetry visuals.',
       summary: 'YOLOv11-based debris detection and onboard systems integration for a constrained CubeSat platform.',
       tags: ['YOLOv11', 'Embedded C++', 'Telemetry']
     },
     {
       ...profile.projects[1],
       image: '/imgs/proj-arcade.png',
+      imageAlt: 'Custom arcade cabinet hardware with illuminated controls and a retro game display.',
       summary: 'Custom Raspberry Pi 5 arcade hardware with a compact software stack for retro and WASM-based play.',
       tags: ['Raspberry Pi 5', 'WASM Games', 'Hardware Build']
     },
     {
       ...profile.projects[2],
       image: '/imgs/proj-compiler.png',
+      imageAlt: 'Programming language project interface with compiler diagnostics and syntax views.',
       summary: 'A programming language built from scratch, covering lexer, parser, semantics, diagnostics, and execution flow.',
       tags: ['Language Design', 'Parsing', 'Semantics']
     }
@@ -78,7 +184,7 @@ export default function App() {
         <a href="#hero" className="brand-mark" aria-label={`${profile.name} home`}>
           <span className="brand-mark__meta">
             <strong>{profile.name}</strong>
-            <small>{profile.headline}</small>
+            <small>Saudi Arabia • Canada</small>
           </span>
         </a>
 
@@ -91,6 +197,7 @@ export default function App() {
           type="button"
           className="menu-button"
           aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-controls="mobile-navigation"
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
@@ -98,7 +205,7 @@ export default function App() {
         </button>
 
         {menuOpen && (
-          <nav className="mobile-menu" aria-label="Section navigation">
+          <nav id="mobile-navigation" className="mobile-menu" aria-label="Section navigation">
             {navItems.map((item) => (
               <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
                 {item.label}
@@ -110,25 +217,38 @@ export default function App() {
 
       <main id="main" className="page">
         <section id="hero" className="hero panel-frame panel-frame--hero">
+          <div className="hero__ambient hero__ambient--one" aria-hidden="true" />
+          <div className="hero__ambient hero__ambient--two" aria-hidden="true" />
           <div className="hero__rail hero__rail--left" aria-hidden="true">
-            <span>Senior AI Engineer</span>
+            <span>Systems • Vision • NLP</span>
           </div>
 
           <div className="hero__copy" data-reveal>
-            <p className="eyebrow">Senior AI Engineer</p>
-            <h1 className="hero__title">
-              I Build AI
-              <br />
-              Systems
-              <br />
-              <span>That Matter_</span>
+            <p className="eyebrow">Senior AI Engineer • Saudi Arabia</p>
+            <h1 className="hero__title" aria-label="I build intelligent systems that hold up in production.">
+              <span className="hero__title-line" data-stagger-text>
+                I Build
+              </span>
+              <span className="hero__title-line" data-stagger-text>
+                Intelligent
+              </span>
+              <span className="hero__title-line hero__title-line--accent" data-stagger-text>
+                Systems_
+              </span>
             </h1>
             <p className="hero__lede">
-              Designing and shipping scalable AI systems that solve real-world problems
-              across agentic workflows, Arabic NLP, computer vision, and HPC.
+              Designing and shipping production systems across agentic workflows, Arabic NLP,
+              computer vision, and high-performance compute.
             </p>
+            <div className="hero__ticker" aria-label="Core focus areas">
+              <div className="hero__ticker-track">
+                {[...heroSignal, ...heroSignal].map((item, index) => (
+                  <span key={`${item}-${index}`}>{item}</span>
+                ))}
+              </div>
+            </div>
             <div className="hero__actions">
-              <a className="button button--primary" href="#projects">
+              <a className="button button--primary" href="#projects" data-magnetic>
                 <span>View My Work</span>
                 <span className="button__icon">
                   <IconArrowRight size={14} />
@@ -137,7 +257,12 @@ export default function App() {
             </div>
           </div>
 
-          <div className="hero__visual" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
+          <div
+            className="hero__visual"
+            data-reveal
+            data-interactive-hero
+            style={{ ['--reveal-delay' as string]: '120ms' }}
+          >
             <div className="portrait-frame">
               <div className="portrait-frame__inner">
                 <img
@@ -160,26 +285,26 @@ export default function App() {
           </div>
         </section>
 
-        <section className="nav-grid panel-frame" data-reveal>
+        <section className="nav-grid panel-frame" data-reveal aria-label="Quick navigation">
           {navItems.map((item, index) => (
-            <a key={item.href} href={item.href} className="nav-grid__item">
+            <a key={item.href} href={item.href} className="nav-grid__item" data-tilt>
               <span className="nav-grid__icon">{item.icon}</span>
               <span className="nav-grid__index">{String(index + 1).padStart(2, '0')}</span>
-              <h2>{item.label}</h2>
+              <h3 className="nav-grid__title">{item.label}</h3>
               <p>{navBlurb(item.label)}</p>
             </a>
           ))}
         </section>
 
-        <section id="experience" className="content-split">
-          <div className="section-copy" data-reveal>
+        <section id="experience" className="content-split" data-pin-section>
+          <div className="section-copy" data-reveal data-pin-target>
             <p className="section-label">Experience</p>
-            <h2>Featured experience</h2>
+            <h2 data-scrub-text>Featured experience</h2>
             <p>
               A record of building and scaling AI systems in research labs, enterprise teams,
               and production engineering environments.
             </p>
-            <a href={profile.contacts.linkedin} target="_blank" rel="noreferrer">
+            <a href={profile.contacts.linkedin} target="_blank" rel="noreferrer" data-magnetic>
               View full timeline
             </a>
           </div>
@@ -226,8 +351,8 @@ export default function App() {
         <section id="skills" className="content-split content-split--skills">
           <div className="section-copy" data-reveal>
             <p className="section-label">Skills</p>
-            <h2>What I work with</h2>
-            <p>Technologies, frameworks, and tools I use to build resilient intelligent systems.</p>
+            <h2 data-scrub-text>Capabilities &amp; tooling</h2>
+            <p>Languages, frameworks, and infrastructure I rely on when shipping robust software.</p>
           </div>
 
           <div className="skill-grid" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
@@ -247,21 +372,21 @@ export default function App() {
         <section id="projects" className="content-split">
           <div className="section-copy" data-reveal>
             <p className="section-label">Projects</p>
-            <h2>Selected projects</h2>
+            <h2 data-scrub-text>Selected projects</h2>
             <p>
-              A few highlights of impactful systems I have led, shipped, and tuned for real
-              operating conditions.
+              A few systems shaped for real operating conditions, constrained hardware, and
+              measurable performance.
             </p>
-            <a href={profile.contacts.github} target="_blank" rel="noreferrer">
+            <a href={profile.contacts.github} target="_blank" rel="noreferrer" data-magnetic>
               View all projects
             </a>
           </div>
 
           <div className="project-grid" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
             {featuredProjects.map((project, index) => (
-              <article key={project.name} className="project-card panel-frame" data-scale-fade>
+              <article key={project.name} className="project-card panel-frame" data-scale-fade data-tilt>
                 <div className="project-card__media">
-                  <img src={project.image} alt="" />
+                  <img src={project.image} alt={project.imageAlt} />
                 </div>
                 <span className="project-card__index">{String(index + 1).padStart(2, '0')}</span>
                 <h3 className="project-card__title">{project.name}</h3>
@@ -279,8 +404,8 @@ export default function App() {
         <section id="background" className="content-split">
           <div className="section-copy" data-reveal>
             <p className="section-label">Background</p>
-            <h2>Education &amp; more</h2>
-            <p>Academic foundation, publications, certification, and languages behind the work.</p>
+            <h2 data-scrub-text>Education &amp; context</h2>
+            <p>Academic foundation, publication status, certification, and language range behind the work.</p>
           </div>
 
           <div className="background-grid" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
@@ -330,8 +455,10 @@ export default function App() {
 
         <section id="connect" className="contact-bar panel-frame" data-reveal>
           <div className="contact-bar__intro">
-            <h2>Let&apos;s build something meaningful.</h2>
-            <a href={`mailto:${profile.contacts.email}`}>Get in touch</a>
+            <h2>Let&apos;s build the next dependable system.</h2>
+            <a href={`mailto:${profile.contacts.email}`} data-magnetic>
+              Get in touch
+            </a>
           </div>
 
           <div className="contact-bar__detail">
@@ -343,11 +470,13 @@ export default function App() {
           <div className="contact-bar__detail">
             <span className="section-label">Connect</span>
             <div className="contact-links">
-              <a href={`mailto:${profile.contacts.email}`}>Email</a>
-              <a href={profile.contacts.linkedin} target="_blank" rel="noreferrer">
+              <a href={`mailto:${profile.contacts.email}`} data-magnetic>
+                Email
+              </a>
+              <a href={profile.contacts.linkedin} target="_blank" rel="noreferrer" data-magnetic>
                 LinkedIn
               </a>
-              <a href={profile.contacts.github} target="_blank" rel="noreferrer">
+              <a href={profile.contacts.github} target="_blank" rel="noreferrer" data-magnetic>
                 GitHub
               </a>
             </div>
@@ -358,11 +487,15 @@ export default function App() {
       <footer className="footer">
         <span className="footer__brand">{profile.name}</span>
         <p>
-          &copy; 2026 {profile.name}. All rights reserved.
+          &copy; 2026 Production systems, research, and engineering work.
         </p>
         <div className="footer__links">
-          <a href={profile.contacts.portfolio}>Portfolio</a>
-          <a href={profile.contacts.github}>GitHub</a>
+          <a href={profile.contacts.portfolio} target="_blank" rel="noreferrer" data-magnetic>
+            Portfolio
+          </a>
+          <a href={profile.contacts.github} target="_blank" rel="noreferrer" data-magnetic>
+            GitHub
+          </a>
         </div>
       </footer>
     </div>
@@ -372,15 +505,15 @@ export default function App() {
 function navBlurb(label: string) {
   switch (label) {
     case 'Profile':
-      return 'Who I am and what I build.';
+      return 'Current role, location, and working focus.';
     case 'Experience':
-      return 'Places I have worked and impact made.';
+      return 'Teams, systems, and delivery history.';
     case 'Projects':
-      return 'Selected work with real outcomes.';
+      return 'Builds tuned for real constraints.';
     case 'Skills':
-      return 'Technologies and tools I use.';
+      return 'Languages, platforms, and tooling.';
     case 'Background':
-      return 'Education, publications, and more.';
+      return 'Education, writing, and fluency.';
     default:
       return 'Open to new collaborations and roles.';
   }

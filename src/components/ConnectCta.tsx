@@ -98,7 +98,7 @@ export default function ConnectCta() {
           <SocialLink href={profile.contacts.linkedin} label="LinkedIn">
             <IconLinkedin size={18} />
           </SocialLink>
-          <SocialLink href="/RESUME-ABDUSSAMAD-FEB-2026.pdf" label="Résumé PDF">
+          <SocialLink href="/RESUME-ABDUSSAMAD-APRIL-2026.pdf" label="Résumé PDF">
             <IconDoc size={18} />
           </SocialLink>
         </div>
