@@ -85,6 +85,49 @@ export default function App() {
         heroVisual.removeEventListener('pointermove', handleMove);
         heroVisual.removeEventListener('pointerleave', resetHero);
       });
+
+      const portrait = heroVisual.querySelector<HTMLElement>('.portrait-frame');
+      if (portrait) {
+        const MAX = 32;
+        const DAMP = 0.55;
+        const clamp = (v: number) => Math.max(-MAX, Math.min(MAX, v * DAMP));
+        let startX = 0;
+        let startY = 0;
+        let dragging = false;
+
+        const onDown = (event: PointerEvent) => {
+          dragging = true;
+          startX = event.clientX;
+          startY = event.clientY;
+          portrait.setPointerCapture(event.pointerId);
+          portrait.classList.add('is-dragging');
+          event.preventDefault();
+        };
+        const onDrag = (event: PointerEvent) => {
+          if (!dragging) return;
+          portrait.style.setProperty('--drag-x', `${clamp(event.clientX - startX).toFixed(2)}px`);
+          portrait.style.setProperty('--drag-y', `${clamp(event.clientY - startY).toFixed(2)}px`);
+        };
+        const onRelease = (event: PointerEvent) => {
+          if (!dragging) return;
+          dragging = false;
+          try { portrait.releasePointerCapture(event.pointerId); } catch {}
+          portrait.classList.remove('is-dragging');
+          portrait.style.removeProperty('--drag-x');
+          portrait.style.removeProperty('--drag-y');
+        };
+
+        portrait.addEventListener('pointerdown', onDown);
+        portrait.addEventListener('pointermove', onDrag);
+        portrait.addEventListener('pointerup', onRelease);
+        portrait.addEventListener('pointercancel', onRelease);
+        cleanup.push(() => {
+          portrait.removeEventListener('pointerdown', onDown);
+          portrait.removeEventListener('pointermove', onDrag);
+          portrait.removeEventListener('pointerup', onRelease);
+          portrait.removeEventListener('pointercancel', onRelease);
+        });
+      }
     }
 
     magneticTargets.forEach((element) => {
@@ -184,7 +227,7 @@ export default function App() {
         <a href="#hero" className="brand-mark" aria-label={`${profile.name} home`}>
           <span className="brand-mark__meta">
             <strong>{profile.name}</strong>
-            <small>Saudi Arabia • Canada</small>
+            <small>Living in Kingdom of Saudi Arabia · Canadian Citizen</small>
           </span>
         </a>
 
@@ -193,30 +236,32 @@ export default function App() {
           <span>Available for new opportunities</span>
         </div>
 
-        <button
-          type="button"
-          className="menu-button"
-          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-controls="mobile-navigation"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <IconMenu size={18} />
-        </button>
+        <nav aria-label="Primary">
+          <button
+            type="button"
+            className="menu-button"
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-controls="mobile-navigation"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <IconMenu size={18} />
+          </button>
 
-        {menuOpen && (
-          <nav id="mobile-navigation" className="mobile-menu" aria-label="Section navigation">
-            {navItems.map((item) => (
-              <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        )}
+          {menuOpen && (
+            <div id="mobile-navigation" className="mobile-menu">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </nav>
       </header>
 
       <main id="main" className="page">
-        <section id="hero" className="hero panel-frame panel-frame--hero">
+        <section id="hero" className="hero panel-frame panel-frame--hero" aria-labelledby="hero-title">
           <div className="hero__ambient hero__ambient--one" aria-hidden="true" />
           <div className="hero__ambient hero__ambient--two" aria-hidden="true" />
           <div className="hero__rail hero__rail--left" aria-hidden="true">
@@ -224,8 +269,12 @@ export default function App() {
           </div>
 
           <div className="hero__copy" data-reveal>
-            <p className="eyebrow">Senior AI Engineer • Saudi Arabia</p>
-            <h1 className="hero__title" aria-label="I build intelligent systems that hold up in production.">
+            <p className="eyebrow">Senior AI Engineer</p>
+            <h1
+              id="hero-title"
+              className="hero__title"
+              aria-label="I build intelligent systems that hold up in production."
+            >
               <span className="hero__title-line" data-stagger-text>
                 I Build
               </span>
@@ -267,25 +316,19 @@ export default function App() {
               <div className="portrait-frame__inner">
                 <img
                   src="/imgs/pfp-regenerated.png"
-                  alt={`Portrait of ${profile.name}`}
+                  alt={`${profile.name} in a workspace setting, presented as a Senior AI Engineer focused on production AI systems, LLMs, and infrastructure.`}
                   className="portrait-frame__image"
+                  width="1254"
+                  height="1254"
+                  loading="eager"
+                  decoding="async"
                 />
-              </div>
-            </div>
-
-            <div className="floating-card floating-card--signature">
-              <div>
-                <p className="floating-card__label">Based in Saudi Arabia</p>
-              </div>
-              <div>
-                <strong>AI Systems</strong>
-                <span>LLMs, vision, HPC</span>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="nav-grid panel-frame" data-reveal aria-label="Quick navigation">
+        <nav className="nav-grid panel-frame" data-reveal aria-label="Primary">
           {navItems.map((item, index) => (
             <a key={item.href} href={item.href} className="nav-grid__item" data-tilt>
               <span className="nav-grid__icon">{item.icon}</span>
@@ -294,18 +337,23 @@ export default function App() {
               <p>{navBlurb(item.label)}</p>
             </a>
           ))}
-        </section>
+        </nav>
 
-        <section id="experience" className="content-split" data-pin-section>
+        <section id="experience" className="content-split" data-pin-section aria-labelledby="experience-heading">
           <div className="section-copy" data-reveal data-pin-target>
             <p className="section-label">Experience</p>
-            <h2 data-scrub-text>Featured experience</h2>
+            <h2 id="experience-heading" data-scrub-text>Featured experience</h2>
             <p>
               A record of building and scaling AI systems in research labs, enterprise teams,
               and production engineering environments.
             </p>
-            <a href={profile.contacts.linkedin} target="_blank" rel="noreferrer" data-magnetic>
-              View full timeline
+            <a
+              href={profile.contacts.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-magnetic
+            >
+              View LinkedIn experience timeline
             </a>
           </div>
 
@@ -317,18 +365,27 @@ export default function App() {
                   key={`${entry.company}-${entry.period}`}
                   className={`timeline__entry ${isOpen ? 'timeline__entry--active' : ''}`}
                 >
-                  <button
-                    type="button"
-                    className="timeline__button"
-                    aria-expanded={isOpen}
-                    onClick={() =>
-                      setActiveExperience((current) => (current === index ? null : index))
-                    }
-                  >
+                  <div className="timeline__button">
                     <div className="timeline__period">{entry.period}</div>
                     <div className="timeline__body">
                       <h3>{entry.role}</h3>
-                      <p className="timeline__company">{entry.company}</p>
+                      <p className="timeline__company">
+                        {entry.company}
+                        {entry.companyUrl && (
+                          <>
+                            {' '}
+                            <a
+                              href={entry.companyUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="timeline__company-link"
+                              aria-label={`${entry.company} website (opens in new tab)`}
+                            >
+                              (link)
+                            </a>
+                          </>
+                        )}
+                      </p>
                       <p className="timeline__location">{entry.location}</p>
                       <div className={`timeline__details ${isOpen ? 'timeline__details--open' : ''}`}>
                         <div className="timeline__details-inner">
@@ -338,20 +395,28 @@ export default function App() {
                         </div>
                       </div>
                     </div>
-                    <div className={`timeline__side ${isOpen ? 'timeline__side--open' : ''}`}>
+                    <button
+                      type="button"
+                      className={`timeline__side ${isOpen ? 'timeline__side--open' : ''}`}
+                      aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${entry.role} details`}
+                      aria-expanded={isOpen}
+                      onClick={() =>
+                        setActiveExperience((current) => (current === index ? null : index))
+                      }
+                    >
                       <span className="timeline__toggle">{isOpen ? '−' : '+'}</span>
-                    </div>
-                  </button>
+                    </button>
+                  </div>
                 </article>
               );
             })}
           </div>
         </section>
 
-        <section id="skills" className="content-split content-split--skills">
+        <section id="skills" className="content-split content-split--skills" aria-labelledby="skills-heading">
           <div className="section-copy" data-reveal>
             <p className="section-label">Skills</p>
-            <h2 data-scrub-text>Capabilities &amp; tooling</h2>
+            <h2 id="skills-heading" data-scrub-text>Capabilities &amp; tooling</h2>
             <p>Languages, frameworks, and infrastructure I rely on when shipping robust software.</p>
           </div>
 
@@ -369,16 +434,21 @@ export default function App() {
           </div>
         </section>
 
-        <section id="projects" className="content-split">
+        <section id="projects" className="content-split" aria-labelledby="projects-heading">
           <div className="section-copy" data-reveal>
             <p className="section-label">Projects</p>
-            <h2 data-scrub-text>Selected projects</h2>
+            <h2 id="projects-heading" data-scrub-text>Selected projects</h2>
             <p>
               A few systems shaped for real operating conditions, constrained hardware, and
               measurable performance.
             </p>
-            <a href={profile.contacts.github} target="_blank" rel="noreferrer" data-magnetic>
-              View all projects
+            <a
+              href={profile.contacts.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-magnetic
+            >
+              View GitHub projects
             </a>
           </div>
 
@@ -386,7 +456,14 @@ export default function App() {
             {featuredProjects.map((project, index) => (
               <article key={project.name} className="project-card panel-frame" data-scale-fade data-tilt>
                 <div className="project-card__media">
-                  <img src={project.image} alt={project.imageAlt} />
+                  <img
+                    src={project.image}
+                    alt={project.imageAlt}
+                    width="1586"
+                    height="992"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <span className="project-card__index">{String(index + 1).padStart(2, '0')}</span>
                 <h3 className="project-card__title">{project.name}</h3>
@@ -401,10 +478,10 @@ export default function App() {
           </div>
         </section>
 
-        <section id="background" className="content-split">
+        <section id="background" className="content-split" aria-labelledby="background-heading">
           <div className="section-copy" data-reveal>
             <p className="section-label">Background</p>
-            <h2 data-scrub-text>Education &amp; context</h2>
+            <h2 id="background-heading" data-scrub-text>Education &amp; context</h2>
             <p>Academic foundation, publication status, certification, and language range behind the work.</p>
           </div>
 
@@ -453,11 +530,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="connect" className="contact-bar panel-frame" data-reveal>
+        <section id="connect" className="contact-bar panel-frame" data-reveal aria-labelledby="connect-heading">
           <div className="contact-bar__intro">
-            <h2>Let&apos;s build the next dependable system.</h2>
+            <h2 id="connect-heading">Let&apos;s build the next dependable system.</h2>
             <a href={`mailto:${profile.contacts.email}`} data-magnetic>
-              Get in touch
+              Email Abdussamad Farooq Saeed
             </a>
           </div>
 
@@ -471,13 +548,23 @@ export default function App() {
             <span className="section-label">Connect</span>
             <div className="contact-links">
               <a href={`mailto:${profile.contacts.email}`} data-magnetic>
-                Email
+                Email Abdussamad
               </a>
-              <a href={profile.contacts.linkedin} target="_blank" rel="noreferrer" data-magnetic>
-                LinkedIn
+              <a
+                href={profile.contacts.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-magnetic
+              >
+                LinkedIn profile
               </a>
-              <a href={profile.contacts.github} target="_blank" rel="noreferrer" data-magnetic>
-                GitHub
+              <a
+                href={profile.contacts.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-magnetic
+              >
+                GitHub profile
               </a>
             </div>
           </div>
@@ -490,11 +577,29 @@ export default function App() {
           &copy; 2026 Production systems, research, and engineering work.
         </p>
         <div className="footer__links">
-          <a href={profile.contacts.portfolio} target="_blank" rel="noreferrer" data-magnetic>
-            Portfolio
+          <a
+            href="/RESUME-ABDUSSAMAD-APRIL-2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-magnetic
+          >
+            Download resume PDF
           </a>
-          <a href={profile.contacts.github} target="_blank" rel="noreferrer" data-magnetic>
-            GitHub
+          <a
+            href={profile.contacts.portfolio}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-magnetic
+          >
+            Portfolio home
+          </a>
+          <a
+            href={profile.contacts.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-magnetic
+          >
+            GitHub profile
           </a>
         </div>
       </footer>

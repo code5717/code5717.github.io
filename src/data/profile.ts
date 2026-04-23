@@ -62,7 +62,7 @@ export interface LanguageEntry {
 
 export const profile = {
   name: 'Abdussamad Farooq Saeed',
-  location: 'Saudi Arabia',
+  location: 'Kingdom of Saudi Arabia',
   citizenship: 'Canadian',
   headline: 'Senior AI Engineer',
   about:
@@ -88,7 +88,7 @@ export const profile = {
       ]
     },
     {
-      role: 'Agentic AI Engineer',
+      role: 'Agentic AI Engineer (Part-Time)',
       company: 'Traffic Hi Tech Company',
       companyUrl: 'https://thtc.sa/',
       location: 'Al-Khobar, Saudi Arabia',

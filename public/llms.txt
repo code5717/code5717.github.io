@@ -1,0 +1,19 @@
+# Abdussamad Farooq Saeed
+
+> Personal portfolio for Abdussamad Farooq Saeed, a Senior AI Engineer in Al-Khobar, Saudi Arabia focused on production LLM systems, agentic workflows, Arabic NLP, computer vision, and CUDA/HPC infrastructure.
+
+## Primary Resources
+
+- [Portfolio Home](https://code5717.github.io/) - Overview, experience, selected projects, background, and contact links.
+- [Resume PDF](https://code5717.github.io/RESUME-ABDUSSAMAD-APRIL-2026.pdf) - Current resume for recruiters, collaborators, and agents summarizing professional experience.
+
+## Project Links
+
+- [Programming Language from Scratch](https://code5717.github.io/a7-py) - Public write-up and implementation notes for a custom language project.
+- [Arraylist for C](https://code5717.github.io/Arraylist) - Documentation site for a type-safe dynamic array library in C.
+- [GitHub Profile](https://github.com/code5717) - Broader project archive and source repositories.
+
+## Contact
+
+- [Email Abdussamad Farooq Saeed](mailto:abdussamadf350@gmail.com)
+- [LinkedIn Profile](https://linkedin.com/in/code5717)

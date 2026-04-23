@@ -126,14 +126,20 @@ export function useReveal() {
     // Scrubbing text reveal on section intros (word-by-word opacity)
     gsap.utils.toArray<HTMLElement>('[data-scrub-text]').forEach((el) => {
       const text = el.textContent ?? '';
-      el.innerHTML = text
-        .split(/(\s+)/)
-        .map((tok) =>
-          /\S/.test(tok)
-            ? `<span class="scrub-word" style="display:inline-block;opacity:0.2;">${tok}</span>`
-            : tok
-        )
-        .join('');
+      el.replaceChildren(
+        ...text.split(/(\s+)/).map((tok) => {
+          if (!/\S/.test(tok)) {
+            return document.createTextNode(tok);
+          }
+
+          const span = document.createElement('span');
+          span.className = 'scrub-word';
+          span.style.display = 'inline-block';
+          span.style.opacity = '0.2';
+          span.textContent = tok;
+          return span;
+        })
+      );
       const words = el.querySelectorAll<HTMLElement>('.scrub-word');
       gsap.to(words, {
         opacity: 1,
