@@ -65,9 +65,9 @@ export default function HeroSection() {
         <div className="portrait-frame portrait-frame--static">
           <div className="portrait-frame__inner">
             <picture>
-              <source srcSet="/imgs/pfp.webp" type="image/webp" />
+              <source srcSet="/imgs/pfp.webp?v=8ea3659" type="image/webp" />
               <img
-                src="/imgs/pfp-regenerated.png"
+                src="/imgs/pfp-regenerated.png?v=8ea3659"
                 alt={`${profile.name} in a workspace setting, presented as a Senior AI Engineer focused on production AI systems, LLMs, and infrastructure.`}
                 className="portrait-frame__image"
                 width="1254"
