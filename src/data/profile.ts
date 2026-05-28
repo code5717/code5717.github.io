@@ -187,7 +187,7 @@ export const profile = {
     {
       name: 'High Performance Custom Compiler',
       period: '2021-2022',
-      link: 'https://github.com/code5717/rotate',
+      link: 'https://code5717.github.io/rotate',
       bullets: [
         'Built recursive descent compiler in C and C++.',
         'Achieved 150 plus MB per second tokenization on i7 and 186 MB per second on i9.',
