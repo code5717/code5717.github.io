@@ -87,7 +87,7 @@ export default function ProjectsSection() {
         </a>
       </div>
 
-      <div className="project-grid" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
+      <div className="project-grid" data-reveal>
         {displayProjects.map((project, index) => (
           <ProjectCard key={project.name} project={project} index={index} />
         ))}

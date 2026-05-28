@@ -11,7 +11,7 @@ export default function SkillsSection() {
         <p>Languages, frameworks, and infrastructure I rely on when shipping robust software.</p>
       </div>
 
-      <div className="skill-grid" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
+      <div className="skill-grid" data-reveal>
         {profile.skillGroups.map((band) => (
           <article key={band.label} className="skill-card panel-frame">
             <p className="skill-card__title">{band.label}</p>

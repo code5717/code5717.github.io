@@ -11,7 +11,7 @@ export default function BackgroundSection() {
         <p>Academic foundation, publication status, certification, and language range behind the work.</p>
       </div>
 
-      <div className="background-grid" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
+      <div className="background-grid" data-reveal>
         <article className="meta-card meta-card--featured panel-frame" data-meta-card data-tilt>
           <span className="meta-card__label">Education</span>
           <h3>{profile.education.degree}</h3>

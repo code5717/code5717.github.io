@@ -27,8 +27,8 @@ export function setupAnchorScroll(scope: HTMLElement, reduceMotion: boolean) {
     event.preventDefault();
 
     gsap.to(window, {
-      duration: reduceMotion ? 0 : 0.85,
-      ease: 'power3.inOut',
+      duration: reduceMotion ? 0 : 0.55,
+      ease: 'power2.inOut',
       scrollTo: {
         y: section,
         offsetY: HEADER_OFFSET,

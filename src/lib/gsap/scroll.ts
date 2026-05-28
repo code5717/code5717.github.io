@@ -3,12 +3,29 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import type { MotionContext } from './types';
 
+const MOTION = {
+  hero: {
+    offsetY: 12,
+    eyebrow: 0.32,
+    title: { desktop: 0.48, mobile: 0.36 },
+    titleStagger: { desktop: 0.035, mobile: 0.028 },
+    body: 0.38,
+    visual: 0.28,
+    action: 0.34,
+    actionStagger: 0.045
+  },
+  reveal: { desktop: 0.42, mobile: 0.3 },
+  chip: { desktop: 0.32, mobile: 0.26, stagger: 0.012 },
+  card: { desktop: 0.4, mobile: 0.3, stagger: 0.028 },
+  meta: { desktop: 0.36, mobile: 0.28, stagger: 0.035 }
+} as const;
+
 function parseRevealDelay(el: HTMLElement) {
   const raw = el.style.getPropertyValue('--reveal-delay').trim();
   if (!raw) {
     return 0;
   }
-  return parseFloat(raw) / 1000 || 0;
+  return (parseFloat(raw) / 1000 || 0) * 0.5;
 }
 
 function showStaticReveals(scope: HTMLElement) {
@@ -38,20 +55,18 @@ function setupHeroIntro(scope: HTMLElement, isDesktop: boolean) {
   const ticker = hero.querySelector<HTMLElement>('.hero__ticker');
   const visual = hero.querySelector<HTMLElement>('.hero__visual');
   const actions = gsap.utils.toArray<HTMLElement>('.hero__actions .button', hero);
+  const hidden = [eyebrow, ...titleLines, lede, ticker, ...actions].filter(Boolean);
 
-  gsap.set([eyebrow, ...titleLines, lede, ticker, ...actions].filter(Boolean), {
-    opacity: 0,
-    y: 24
-  });
+  gsap.set(hidden, { opacity: 0, y: MOTION.hero.offsetY });
 
   if (visual) {
-    gsap.set(visual, { opacity: 1, scale: 0.98, y: 8 });
+    gsap.set(visual, { opacity: 1, scale: 0.99, y: 4 });
   }
 
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
   if (eyebrow) {
-    tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.55 }, 0.05);
+    tl.to(eyebrow, { opacity: 1, y: 0, duration: MOTION.hero.eyebrow }, 0);
   }
 
   if (titleLines.length) {
@@ -60,28 +75,28 @@ function setupHeroIntro(scope: HTMLElement, isDesktop: boolean) {
       {
         opacity: 1,
         y: 0,
-        duration: isDesktop ? 0.95 : 0.65,
-        stagger: isDesktop ? 0.08 : 0.06,
+        duration: isDesktop ? MOTION.hero.title.desktop : MOTION.hero.title.mobile,
+        stagger: isDesktop ? MOTION.hero.titleStagger.desktop : MOTION.hero.titleStagger.mobile,
         clearProps: 'transform,opacity'
       },
-      0.12
+      0.02
     );
   }
 
   if (lede) {
-    tl.to(lede, { opacity: 1, y: 0, duration: 0.7, clearProps: 'transform,opacity' }, '-=0.45');
+    tl.to(lede, { opacity: 1, y: 0, duration: MOTION.hero.body, clearProps: 'transform,opacity' }, 0.08);
   }
 
   if (ticker) {
-    tl.to(ticker, { opacity: 1, y: 0, duration: 0.65, clearProps: 'transform,opacity' }, '-=0.35');
+    tl.to(
+      ticker,
+      { opacity: 1, y: 0, duration: MOTION.hero.body, clearProps: 'transform,opacity' },
+      0.12
+    );
   }
 
   if (visual) {
-    tl.to(
-      visual,
-      { scale: 1, y: 0, duration: 0.55, clearProps: 'transform' },
-      0.08
-    );
+    tl.to(visual, { scale: 1, y: 0, duration: MOTION.hero.visual, clearProps: 'transform' }, 0);
   }
 
   if (actions.length) {
@@ -90,11 +105,11 @@ function setupHeroIntro(scope: HTMLElement, isDesktop: boolean) {
       {
         opacity: 1,
         y: 0,
-        duration: 0.55,
-        stagger: 0.08,
+        duration: MOTION.hero.action,
+        stagger: MOTION.hero.actionStagger,
         clearProps: 'transform,opacity'
       },
-      '-=0.35'
+      0.14
     );
   }
 }
@@ -107,16 +122,16 @@ function setupReveals(scope: HTMLElement, isDesktop: boolean) {
   revealEls.forEach((el, index) => {
     ScrollTrigger.create({
       trigger: el,
-      start: 'top 92%',
+      start: 'top 98%',
       once: true,
       refreshPriority: revealEls.length - index,
       onEnter: () => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
-          duration: isDesktop ? 0.82 : 0.5,
+          duration: isDesktop ? MOTION.reveal.desktop : MOTION.reveal.mobile,
           delay: parseRevealDelay(el),
-          ease: 'power3.out',
+          ease: 'power2.out',
           clearProps: 'transform,opacity',
           onComplete: () => {
             el.classList.add('is-visible');
@@ -130,15 +145,15 @@ function setupReveals(scope: HTMLElement, isDesktop: boolean) {
   if (pinTarget) {
     ScrollTrigger.create({
       trigger: pinTarget,
-      start: 'top 92%',
+      start: 'top 98%',
       once: true,
       refreshPriority: revealEls.length + 1,
       onEnter: () => {
         gsap.to(pinTarget, {
           opacity: 1,
           y: 0,
-          duration: isDesktop ? 0.82 : 0.5,
-          ease: 'power3.out',
+          duration: isDesktop ? MOTION.reveal.desktop : MOTION.reveal.mobile,
+          ease: 'power2.out',
           clearProps: 'transform,opacity',
           onComplete: () => {
             pinTarget.classList.add('is-visible');
@@ -155,18 +170,18 @@ function setupSkillChips(scope: HTMLElement, isDesktop: boolean) {
     return;
   }
 
-  gsap.set(chips, { opacity: 0, y: 14, scale: 0.96 });
+  gsap.set(chips, { opacity: 0, y: 8, scale: 0.98 });
 
   ScrollTrigger.batch(chips, {
-    start: 'top 94%',
+    start: 'top 98%',
     once: true,
     onEnter: (elements) => {
       gsap.to(elements, {
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: isDesktop ? 0.55 : 0.4,
-        stagger: 0.025,
+        duration: isDesktop ? MOTION.chip.desktop : MOTION.chip.mobile,
+        stagger: MOTION.chip.stagger,
         ease: 'power2.out',
         clearProps: 'transform,opacity',
         onComplete: () => {
@@ -183,18 +198,18 @@ function setupProjectCards(scope: HTMLElement, isDesktop: boolean) {
     return;
   }
 
-  gsap.set(cards, { opacity: 0, y: isDesktop ? 28 : 16 });
+  gsap.set(cards, { opacity: 0, y: isDesktop ? 16 : 10 });
 
   ScrollTrigger.batch(cards, {
-    start: 'top 96%',
+    start: 'top 98%',
     once: true,
     onEnter: (elements) => {
       gsap.to(elements, {
         opacity: 1,
         y: 0,
-        duration: isDesktop ? 0.7 : 0.45,
-        stagger: 0.06,
-        ease: 'power3.out',
+        duration: isDesktop ? MOTION.card.desktop : MOTION.card.mobile,
+        stagger: MOTION.card.stagger,
+        ease: 'power2.out',
         clearProps: 'transform,opacity'
       });
     }
@@ -206,7 +221,7 @@ function setupProjectCards(scope: HTMLElement, isDesktop: boolean) {
     scaleFadeEls.forEach((el) => {
       gsap.fromTo(
         el,
-        { scale: 0.92, opacity: 0.65 },
+        { scale: 0.94, opacity: 0.72 },
         {
           scale: 1,
           opacity: 1,
@@ -214,8 +229,8 @@ function setupProjectCards(scope: HTMLElement, isDesktop: boolean) {
           scrollTrigger: {
             trigger: el,
             start: 'top 98%',
-            end: 'top 52%',
-            scrub: 0.8
+            end: 'top 58%',
+            scrub: 0.45
           }
         }
       );
@@ -226,15 +241,15 @@ function setupProjectCards(scope: HTMLElement, isDesktop: boolean) {
   scaleFadeEls.forEach((el) => {
     gsap.fromTo(
       el,
-      { opacity: 0, scale: 0.96 },
+      { opacity: 0, scale: 0.98 },
       {
         opacity: 1,
         scale: 1,
-        duration: 0.45,
+        duration: 0.28,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: el,
-          start: 'top 92%',
+          start: 'top 96%',
           once: true
         }
       }
@@ -251,17 +266,17 @@ function setupMetaCards(scope: HTMLElement, isDesktop: boolean) {
     return;
   }
 
-  gsap.set(targets, { opacity: 0, y: isDesktop ? 20 : 12 });
+  gsap.set(targets, { opacity: 0, y: isDesktop ? 12 : 8 });
 
   ScrollTrigger.batch(targets, {
-    start: 'top 94%',
+    start: 'top 98%',
     once: true,
     onEnter: (elements) => {
       gsap.to(elements, {
         opacity: 1,
         y: 0,
-        duration: isDesktop ? 0.6 : 0.42,
-        stagger: 0.07,
+        duration: isDesktop ? MOTION.meta.desktop : MOTION.meta.mobile,
+        stagger: MOTION.meta.stagger,
         ease: 'power2.out',
         clearProps: 'transform,opacity',
         onComplete: () => {
@@ -280,14 +295,14 @@ function setupFooterReveal(scope: HTMLElement, isDesktop: boolean) {
 
   ScrollTrigger.create({
     trigger: footer,
-    start: 'top 96%',
+    start: 'top 98%',
     once: true,
     onEnter: () => {
       gsap.to(footer, {
         opacity: 1,
         y: 0,
-        duration: isDesktop ? 0.7 : 0.45,
-        ease: 'power3.out',
+        duration: isDesktop ? MOTION.reveal.desktop : MOTION.reveal.mobile,
+        ease: 'power2.out',
         clearProps: 'transform,opacity',
         onComplete: () => {
           footer.classList.add('is-visible');
@@ -308,13 +323,13 @@ function setupScrubHeadings(scope: HTMLElement) {
 
     gsap.to(split.words, {
       opacity: 1,
-      stagger: 0.05,
+      stagger: 0.04,
       ease: 'none',
       scrollTrigger: {
         trigger: el,
-        start: 'top 85%',
-        end: 'top 45%',
-        scrub: 0.8
+        start: 'top 88%',
+        end: 'top 48%',
+        scrub: 0.5
       }
     });
   });
@@ -401,9 +416,9 @@ function setupExperiencePin(scope: HTMLElement, isDesktop: boolean) {
         ease: 'none',
         scrollTrigger: {
           trigger: entry,
-          start: 'top 88%',
-          end: isDesktop ? 'top 58%' : 'top 72%',
-          scrub: isDesktop ? 0.6 : false,
+          start: 'top 92%',
+          end: isDesktop ? 'top 62%' : 'top 74%',
+          scrub: isDesktop ? 0.45 : false,
           once: !isDesktop
         }
       }

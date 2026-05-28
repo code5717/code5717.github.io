@@ -55,7 +55,7 @@ export default function ExperienceSection({
         </div>
       </div>
 
-      <div className="timeline panel-frame" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
+      <div className="timeline panel-frame" data-reveal>
         {profile.experience.map((entry, index) => {
           const isOpen = activeExperience === index;
           return (
