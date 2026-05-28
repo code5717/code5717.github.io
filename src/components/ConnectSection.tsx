@@ -10,7 +10,9 @@ export default function ConnectSection({ onEmailClick }: ConnectSectionProps) {
   return (
     <section id="connect" className="contact-bar panel-frame" data-reveal aria-labelledby="connect-heading">
       <div className="contact-bar__intro">
-        <h2 id="connect-heading">Let&apos;s build the next dependable system.</h2>
+        <h2 id="connect-heading" data-scrub-text>
+          Let&apos;s build the next dependable system.
+        </h2>
         <a href={`mailto:${profile.contacts.email}`} data-magnetic onClick={onEmailClick}>
           Email Abdussamad Farooq Saeed
         </a>

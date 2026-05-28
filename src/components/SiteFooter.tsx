@@ -3,7 +3,7 @@ import { RESUME_PATH } from '../lib/nav';
 
 export default function SiteFooter() {
   return (
-    <footer className="footer">
+    <footer className="footer" data-reveal>
       <span className="footer__brand">{profile.name}</span>
       <p>&copy; 2026 Production systems, research, and engineering work.</p>
       <div className="footer__links">

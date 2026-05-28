@@ -12,7 +12,7 @@ export default function BackgroundSection() {
       </div>
 
       <div className="background-grid" data-reveal style={{ ['--reveal-delay' as string]: '120ms' }}>
-        <article className="meta-card meta-card--featured panel-frame">
+        <article className="meta-card meta-card--featured panel-frame" data-meta-card data-tilt>
           <span className="meta-card__label">Education</span>
           <h3>{profile.education.degree}</h3>
           <p>{profile.education.institution}</p>
@@ -24,14 +24,14 @@ export default function BackgroundSection() {
         </article>
 
         <div className="meta-stack">
-          <article className="meta-card panel-frame">
+          <article className="meta-card panel-frame" data-meta-card data-tilt>
             <span className="meta-card__label">Certification</span>
             <h3>{profile.certification.title}</h3>
             <p>{profile.certification.issuer}</p>
             <small>Verified training</small>
           </article>
 
-          <article className="meta-card panel-frame">
+          <article className="meta-card panel-frame" data-meta-card data-tilt>
             <span className="meta-card__label">Publication</span>
             <h3>{profile.publication.status}</h3>
             <p>{profile.publication.title}</p>
@@ -43,7 +43,7 @@ export default function BackgroundSection() {
           </article>
         </div>
 
-        <article className="meta-card meta-card--volunteering panel-frame">
+        <article className="meta-card meta-card--volunteering panel-frame" data-meta-card data-tilt>
           <span className="meta-card__label">Volunteering</span>
           <h3>{profile.volunteering.role}</h3>
           <p>{profile.volunteering.organization}</p>
@@ -54,14 +54,14 @@ export default function BackgroundSection() {
           </div>
         </article>
 
-        <article className="meta-card meta-card--languages panel-frame">
+        <article className="meta-card meta-card--languages panel-frame" data-meta-card data-tilt>
           <div>
             <span className="meta-card__label">Languages</span>
             <h3>Working languages</h3>
           </div>
           <div className="language-list">
             {profile.languages.map((item) => (
-              <div key={item.name} className="language-list__item">
+              <div key={item.name} className="language-list__item" data-meta-item>
                 <strong>{item.name}</strong>
                 <span>{item.fluency}</span>
               </div>

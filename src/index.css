@@ -220,6 +220,19 @@ svg {
     border-color 280ms var(--ease-premium);
 }
 
+.topbar__progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-accent));
+  opacity: 0.85;
+  pointer-events: none;
+}
+
 .topbar--scrolled {
   background: rgba(4, 8, 13, 0.88);
   border-bottom: 1px solid var(--color-line);
@@ -1016,7 +1029,7 @@ svg {
 .footer__links a:hover,
 .footer__links a:focus-visible {
   color: #edf2f6;
-  transform: translateY(-1px);
+  transform: translate3d(var(--magnetic-x, 0), calc(var(--magnetic-y, 0px) - 1px), 0);
 }
 
 .timeline {
@@ -1628,6 +1641,73 @@ html.js-reveal-ready [data-reveal] {
   transition: none;
 }
 
+html.js-reveal-ready [data-skill-chip] {
+  transition: none;
+}
+
+html.js-reveal-ready [data-meta-item] {
+  transition: none;
+}
+
+html.js-reveal-ready .mobile-menu-backdrop,
+html.js-reveal-ready .mobile-menu {
+  transition: none;
+}
+
+html.js-reveal-ready .timeline__details,
+html.js-reveal-ready .timeline__details-inner {
+  transition: none;
+}
+
+html.js-reveal-ready [data-magnetic],
+html.js-reveal-ready [data-tilt],
+html.js-reveal-ready .portrait-frame:not(.portrait-frame--static) {
+  will-change: transform;
+}
+
+html.js-reveal-ready .mobile-menu__link {
+  transition: none;
+}
+
+.brand-mark {
+  transform: translate3d(var(--magnetic-x, 0), var(--magnetic-y, 0), 0);
+}
+
+.timeline__side {
+  transform: translate3d(var(--magnetic-x, 0), var(--magnetic-y, 0), 0);
+}
+
+[data-meta-card] {
+  transform: perspective(900px)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg));
+  transform-style: preserve-3d;
+}
+
+[data-meta-item] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+[data-meta-item].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.scrub-word {
+  display: inline-block;
+}
+
+[data-skill-chip] {
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+}
+
+[data-skill-chip].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(22px);
@@ -1635,7 +1715,6 @@ html.js-reveal-ready [data-reveal] {
     opacity 820ms var(--ease-premium),
     transform 820ms var(--ease-premium);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
 
 [data-reveal].is-visible {

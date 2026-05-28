@@ -1,15 +1,15 @@
-import type { RefObject } from 'react';
+import { useRef } from 'react';
 import { profile } from '../data/profile';
 import { navItems, type SectionId } from '../lib/nav';
 import { IconMenu } from '../lib/icons';
+import { useMobileMenuMotion } from '../lib/gsap/dom';
 
 type SiteHeaderProps = {
   topbarScrolled: boolean;
   menuOpen: boolean;
   activeSection: SectionId;
-  menuButtonRef: RefObject<HTMLButtonElement>;
-  firstMenuLinkRef: RefObject<HTMLAnchorElement>;
-  drawerRef: RefObject<HTMLElement>;
+  menuButtonRef: React.RefObject<HTMLButtonElement>;
+  firstMenuLinkRef: React.RefObject<HTMLAnchorElement>;
   onToggleMenu: () => void;
   onCloseMenu: () => void;
 };
@@ -20,14 +20,18 @@ export default function SiteHeader({
   activeSection,
   menuButtonRef,
   firstMenuLinkRef,
-  drawerRef,
   onToggleMenu,
   onCloseMenu
 }: SiteHeaderProps) {
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
+
+  useMobileMenuMotion(menuOpen, { backdropRef, drawerRef, menuButtonRef });
+
   return (
     <>
       <header className={`topbar ${topbarScrolled ? 'topbar--scrolled' : ''}`}>
-        <a href="#hero" className="brand-mark" aria-label={`${profile.name} home`}>
+        <a href="#hero" className="brand-mark" data-magnetic aria-label={`${profile.name} home`}>
           <span className="brand-mark__meta">
             <strong>{profile.name}</strong>
             <small>Living in Kingdom of Saudi Arabia · Canadian Citizen</small>
@@ -52,9 +56,12 @@ export default function SiteHeader({
             <IconMenu size={18} />
           </button>
         </nav>
+
+        <div className="topbar__progress" aria-hidden="true" />
       </header>
 
       <div
+        ref={backdropRef}
         className={`mobile-menu-backdrop ${menuOpen ? 'is-open' : ''}`}
         aria-hidden={!menuOpen}
         onClick={onCloseMenu}

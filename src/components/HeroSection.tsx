@@ -11,7 +11,7 @@ export default function HeroSection() {
         <span>Systems • Vision • NLP</span>
       </div>
 
-      <div className="hero__copy" data-reveal>
+      <div className="hero__copy">
         <p className="eyebrow">Senior AI Engineer</p>
         <h1
           id="hero-title"
@@ -61,12 +61,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div
-        className="hero__visual"
-        data-reveal
-        data-interactive-hero
-        style={{ ['--reveal-delay' as string]: '120ms' }}
-      >
+      <div className="hero__visual" data-interactive-hero>
         <div className="portrait-frame portrait-frame--static">
           <div className="portrait-frame__inner">
             <picture>

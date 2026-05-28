@@ -17,7 +17,9 @@ export default function SkillsSection() {
             <p className="skill-card__title">{band.label}</p>
             <div className="tag-row">
               {band.items.map((item) => (
-                <span key={item}>{item}</span>
+                <span key={item} data-skill-chip>
+                  {item}
+                </span>
               ))}
             </div>
           </article>
