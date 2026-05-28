@@ -39,10 +39,14 @@ function setupHeroIntro(scope: HTMLElement, isDesktop: boolean) {
   const visual = hero.querySelector<HTMLElement>('.hero__visual');
   const actions = gsap.utils.toArray<HTMLElement>('.hero__actions .button', hero);
 
-  gsap.set([eyebrow, ...titleLines, lede, ticker, visual, ...actions].filter(Boolean), {
+  gsap.set([eyebrow, ...titleLines, lede, ticker, ...actions].filter(Boolean), {
     opacity: 0,
     y: 24
   });
+
+  if (visual) {
+    gsap.set(visual, { opacity: 1, scale: 0.98, y: 8 });
+  }
 
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
@@ -73,11 +77,10 @@ function setupHeroIntro(scope: HTMLElement, isDesktop: boolean) {
   }
 
   if (visual) {
-    tl.fromTo(
+    tl.to(
       visual,
-      { opacity: 0, scale: 0.94, y: 18 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.85, clearProps: 'transform,opacity' },
-      '-=0.55'
+      { scale: 1, y: 0, duration: 0.55, clearProps: 'transform' },
+      0.08
     );
   }
 

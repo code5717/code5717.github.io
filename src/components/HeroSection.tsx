@@ -65,15 +65,22 @@ export default function HeroSection() {
         <div className="portrait-frame portrait-frame--static">
           <div className="portrait-frame__inner">
             <picture>
-              <source srcSet="/imgs/pfp.webp?v=8ea3659" type="image/webp" />
+              <source
+                srcSet="/imgs/pfp-520.webp?v=2 520w, /imgs/pfp-1040.webp?v=2 1040w"
+                sizes="(min-width: 1024px) 520px, min(88vw, 400px)"
+                type="image/webp"
+              />
               <img
-                src="/imgs/pfp-regenerated.png?v=8ea3659"
+                src="/imgs/pfp-regenerated.png?v=2"
+                srcSet="/imgs/pfp-regenerated.png?v=2 800w"
+                sizes="(min-width: 1024px) 520px, min(88vw, 400px)"
                 alt={`${profile.name} in a workspace setting, presented as a Senior AI Engineer focused on production AI systems, LLMs, and infrastructure.`}
                 className="portrait-frame__image"
-                width="1254"
-                height="1254"
+                width="800"
+                height="800"
                 loading="eager"
                 decoding="async"
+                fetchPriority="high"
               />
             </picture>
           </div>
