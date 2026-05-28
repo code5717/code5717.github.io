@@ -1624,6 +1624,10 @@ svg {
 }
 
 
+html.js-reveal-ready [data-reveal] {
+  transition: none;
+}
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(22px);

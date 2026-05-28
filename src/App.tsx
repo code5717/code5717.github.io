@@ -13,7 +13,8 @@ import ConnectSection from './components/ConnectSection';
 import SiteFooter from './components/SiteFooter';
 
 export default function App() {
-  useReveal();
+  const siteRef = useRef<HTMLDivElement>(null);
+  useReveal(siteRef);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [topbarScrolled, setTopbarScrolled] = useState(false);
@@ -255,7 +256,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="site-shell">
+    <div ref={siteRef} className="site-shell">
       <a href="#main" className="skip-link">
         Skip to main content
       </a>
