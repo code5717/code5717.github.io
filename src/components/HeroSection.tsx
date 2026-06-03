@@ -1,4 +1,3 @@
-import { profile } from '../data/profile';
 import { heroSignal, RESUME_PATH } from '../lib/nav';
 import { IconArrowRight } from '../lib/icons';
 
@@ -64,25 +63,15 @@ export default function HeroSection() {
       <div className="hero__visual" data-interactive-hero>
         <div className="portrait-frame portrait-frame--static">
           <div className="portrait-frame__inner">
-            <picture>
-              <source
-                srcSet="/imgs/pfp-520.webp?v=2 520w, /imgs/pfp-1040.webp?v=2 1040w"
-                sizes="(min-width: 1024px) 520px, min(88vw, 400px)"
-                type="image/webp"
-              />
-              <img
-                src="/imgs/pfp-regenerated.png?v=2"
-                srcSet="/imgs/pfp-regenerated.png?v=2 800w"
-                sizes="(min-width: 1024px) 520px, min(88vw, 400px)"
-                alt={`${profile.name} in a workspace setting, presented as a Senior AI Engineer focused on production AI systems, LLMs, and infrastructure.`}
-                className="portrait-frame__image"
-                width="800"
-                height="800"
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-              />
-            </picture>
+            <img
+              src="/imgs/proj-agents.png"
+              alt="Abstract connected agent network representing production AI systems and orchestration."
+              className="portrait-frame__image"
+              width="1200"
+              height="750"
+              loading="eager"
+              decoding="async"
+            />
           </div>
         </div>
       </div>
