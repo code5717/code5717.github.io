@@ -4,19 +4,8 @@ import { IconArrowRight } from '../lib/icons';
 export default function HeroSection() {
   return (
     <section id="hero" className="hero panel-frame panel-frame--hero" aria-labelledby="hero-title">
-      <div className="hero__ambient hero__ambient--one" aria-hidden="true" />
-      <div className="hero__ambient hero__ambient--two" aria-hidden="true" />
-      <div className="hero__rail hero__rail--left" aria-hidden="true">
-        <span>Systems • Vision • NLP</span>
-      </div>
-
       <div className="hero__copy">
-        <p className="eyebrow">Senior AI Engineer</p>
-        <h1
-          id="hero-title"
-          className="hero__title"
-          aria-label="I build intelligent systems that hold up in production."
-        >
+        <h1 id="hero-title" className="hero__title">
           <span className="hero__title-line" data-stagger-text>
             I Build
           </span>
@@ -27,9 +16,12 @@ export default function HeroSection() {
             Systems_
           </span>
         </h1>
+        <p className="hero__role" data-stagger-text>
+          Senior AI Engineer
+        </p>
         <p className="hero__lede">
-          Designing and shipping production systems across agentic workflows, Arabic NLP,
-          computer vision, and high-performance compute.
+          Designing and shipping production-grade AI systems across agentic workflows,
+          Arabic NLP, computer vision, and high-performance compute.
         </p>
         <div className="hero__ticker" aria-label="Core focus areas">
           <div className="hero__ticker-track">
@@ -64,11 +56,13 @@ export default function HeroSection() {
         <div className="portrait-frame portrait-frame--static">
           <div className="portrait-frame__inner">
             <img
-              src="/imgs/proj-agents.png"
-              alt="Abstract connected agent network representing production AI systems and orchestration."
+              src="/imgs/pfp-520.webp?v=3"
+              srcSet="/imgs/pfp-520.webp?v=3 520w, /imgs/pfp-1040.webp?v=3 1040w"
+              sizes="(max-width: 400px) 180px, (max-width: 640px) 204px, (max-width: 900px) 280px, (max-width: 1180px) 40vw, 660px"
+              alt="Professional portrait of Abdussamad Farooq Saeed, Senior AI Engineer."
               className="portrait-frame__image"
-              width="1200"
-              height="750"
+              width="1040"
+              height="1040"
               loading="eager"
               decoding="async"
             />

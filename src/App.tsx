@@ -26,6 +26,7 @@ export default function App() {
   const [toast, setToast] = useState<string | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
+  const wasMenuOpenRef = useRef(false);
 
   useToastMotion(toast, toastRef);
 
@@ -65,6 +66,13 @@ export default function App() {
     return () => {
       document.body.style.overflow = '';
     };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (wasMenuOpenRef.current && !menuOpen) {
+      window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+    }
+    wasMenuOpenRef.current = menuOpen;
   }, [menuOpen]);
 
   useEffect(() => {

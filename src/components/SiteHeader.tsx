@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { profile } from '../data/profile';
-import { navItems, type SectionId } from '../lib/nav';
-import { IconMenu } from '../lib/icons';
+import { navItems, RESUME_PATH, type SectionId } from '../lib/nav';
+import { IconArrowRight, IconMenu } from '../lib/icons';
 import { useMobileMenuMotion } from '../lib/gsap/dom';
 
 type SiteHeaderProps = {
@@ -44,6 +44,18 @@ export default function SiteHeader({
         </div>
 
         <nav className="topbar__nav" aria-label="Primary">
+          <div className="desktop-nav">
+            {navItems.slice(1).map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`desktop-nav__link ${activeSection === item.id ? 'desktop-nav__link--active' : ''}`}
+                aria-current={activeSection === item.id ? 'location' : undefined}
+              >
+                {item.label === "Let's Connect" ? 'Connect' : item.label}
+              </a>
+            ))}
+          </div>
           <button
             ref={menuButtonRef}
             type="button"
@@ -56,6 +68,18 @@ export default function SiteHeader({
             <IconMenu size={18} />
           </button>
         </nav>
+
+        <a
+          className="topbar__resume"
+          href={RESUME_PATH}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-magnetic
+          aria-label="Download Abdussamad Farooq Saeed resume PDF"
+        >
+          <span>Download Resume</span>
+          <IconArrowRight size={13} />
+        </a>
 
         <div className="topbar__progress" aria-hidden="true" />
       </header>
@@ -71,7 +95,7 @@ export default function SiteHeader({
         ref={drawerRef}
         id="mobile-navigation"
         className={`mobile-menu mobile-menu--drawer ${menuOpen ? 'is-open' : ''}`}
-        aria-label="Mobile"
+        aria-label="Main navigation"
         aria-hidden={!menuOpen}
       >
         {navItems.map((item, index) => (
@@ -80,13 +104,26 @@ export default function SiteHeader({
             ref={index === 0 ? firstMenuLinkRef : undefined}
             href={item.href}
             className={`mobile-menu__link ${activeSection === item.id ? 'mobile-menu__link--active' : ''}`}
+            aria-current={activeSection === item.id ? 'location' : undefined}
             onClick={onCloseMenu}
             tabIndex={menuOpen ? 0 : -1}
           >
-            <span className="mobile-menu__icon">{item.icon}</span>
+            <span className="mobile-menu__index">{String(index + 1).padStart(2, '0')}</span>
             <span>{item.label}</span>
           </a>
         ))}
+        <a
+          className="mobile-menu__cta"
+          href={RESUME_PATH}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onCloseMenu}
+          tabIndex={menuOpen ? 0 : -1}
+          aria-label="Download Abdussamad Farooq Saeed resume PDF"
+        >
+          <span>Download Resume</span>
+          <IconArrowRight size={13} />
+        </a>
       </nav>
     </>
   );

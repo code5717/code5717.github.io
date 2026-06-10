@@ -6,7 +6,6 @@ import type { MotionContext } from './types';
 const MOTION = {
   hero: {
     offsetY: 12,
-    eyebrow: 0.32,
     title: { desktop: 0.48, mobile: 0.36 },
     titleStagger: { desktop: 0.035, mobile: 0.028 },
     body: 0.38,
@@ -49,13 +48,12 @@ function setupHeroIntro(scope: HTMLElement, isDesktop: boolean) {
     return;
   }
 
-  const eyebrow = hero.querySelector<HTMLElement>('.eyebrow');
   const titleLines = gsap.utils.toArray<HTMLElement>('[data-stagger-text]', hero);
   const lede = hero.querySelector<HTMLElement>('.hero__lede');
   const ticker = hero.querySelector<HTMLElement>('.hero__ticker');
   const visual = hero.querySelector<HTMLElement>('.hero__visual');
   const actions = gsap.utils.toArray<HTMLElement>('.hero__actions .button', hero);
-  const hidden = [eyebrow, ...titleLines, lede, ticker, ...actions].filter(Boolean);
+  const hidden = [...titleLines, lede, ticker, ...actions].filter(Boolean);
 
   gsap.set(hidden, { opacity: 0, y: MOTION.hero.offsetY });
 
@@ -64,10 +62,6 @@ function setupHeroIntro(scope: HTMLElement, isDesktop: boolean) {
   }
 
   const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-
-  if (eyebrow) {
-    tl.to(eyebrow, { opacity: 1, y: 0, duration: MOTION.hero.eyebrow }, 0);
-  }
 
   if (titleLines.length) {
     tl.to(
@@ -343,7 +337,6 @@ function setupHeroParallax(scope: HTMLElement) {
   const hero = scope.querySelector<HTMLElement>('.hero');
   const heroCopy = scope.querySelector<HTMLElement>('.hero__copy');
   const heroVisual = scope.querySelector<HTMLElement>('.hero__visual');
-  const heroAmbient = gsap.utils.toArray<HTMLElement>('.hero__ambient', scope);
 
   if (!hero || !heroCopy || !heroVisual) {
     return;
@@ -372,19 +365,6 @@ function setupHeroParallax(scope: HTMLElement) {
     }
   });
 
-  heroAmbient.forEach((item, index) => {
-    gsap.to(item, {
-      yPercent: -14 - index * 5,
-      xPercent: index === 0 ? -5 : 6,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: hero,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1.2
-      }
-    });
-  });
 }
 
 function setupExperiencePin(scope: HTMLElement, isDesktop: boolean) {
@@ -429,15 +409,15 @@ function setupExperiencePin(scope: HTMLElement, isDesktop: boolean) {
 export function setupScrollProgress(scope: HTMLElement) {
   const progressBar = scope.querySelector<HTMLElement>('.topbar__progress');
   if (!progressBar) {
-    return;
+    return undefined;
   }
 
   const main = scope.querySelector<HTMLElement>('#main');
   if (!main) {
-    return;
+    return undefined;
   }
 
-  gsap.fromTo(
+  const progressTween = gsap.fromTo(
     progressBar,
     { scaleX: 0 },
     {
@@ -452,12 +432,17 @@ export function setupScrollProgress(scope: HTMLElement) {
       }
     }
   );
+
+  return () => {
+    progressTween.scrollTrigger?.kill();
+    progressTween.kill();
+  };
 }
 
 export function setupScrollMotion(ctx: MotionContext) {
   const { scope, isDesktop, reduceMotion } = ctx;
 
-  if (reduceMotion) {
+  if (reduceMotion || !isDesktop) {
     showStaticReveals(scope);
     return undefined;
   }
@@ -468,15 +453,7 @@ export function setupScrollMotion(ctx: MotionContext) {
   setupProjectCards(scope, isDesktop);
   setupMetaCards(scope, isDesktop);
   setupFooterReveal(scope, isDesktop);
-  setupScrollProgress(scope);
   setupExperiencePin(scope, isDesktop);
-
-  if (!isDesktop) {
-    scope.querySelectorAll<HTMLElement>('[data-scrub-text]').forEach((el) => {
-      el.classList.add('is-scrub-visible');
-    });
-    return undefined;
-  }
 
   setupHeroParallax(scope);
   const revertSplits = setupScrubHeadings(scope);

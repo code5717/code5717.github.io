@@ -24,7 +24,10 @@ export function useMobileMenuMotion(menuOpen: boolean, refs: MobileMenuRefs) {
         return;
       }
 
-      const links = gsap.utils.toArray<HTMLElement>('.mobile-menu__link', drawer);
+      const links = gsap.utils.toArray<HTMLElement>(
+        '.mobile-menu__link, .mobile-menu__cta',
+        drawer
+      );
 
       gsap.set(backdrop, { autoAlpha: 0 });
       gsap.set(drawer, { xPercent: 104, autoAlpha: 1 });
